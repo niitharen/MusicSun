@@ -1,0 +1,79 @@
+﻿@model IEnumerable<MusicShf.Models.Carts>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>购物车</h2>
+
+<p>
+    @Html.ActionLink("结算", "SubmitOrder","CheckOut")
+</p>
+<table class="table">
+    <tr>
+        <th>
+           商品名称
+        </th>
+        <th>
+           商品单价
+        </th>
+        <th>
+           商品数量
+        </th>
+       
+        <th>操作</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr id="row-@item.RecordId">
+        <td>
+            @Html.DisplayFor(modelItem => item.Albums.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Albums.Price);
+        </td>
+     <td>
+         <input type="text" class="item_count" data-id="@item.RecordId" value="@item.Count"/>
+     </td>
+        <td>
+            <a href="#" class="remove_link" data-id="@item.RecordId">移除</a>
+         @* @Html.ActionLink("移除", "RemoveFromCart", new { id=item.RecordId }) |*@
+
+        </td>
+    </tr>
+}  
+    <tr>
+        <td>总计</td>
+
+        <td></td>
+        <td></td>
+
+        <td><text id="cart-total"></text>@ViewBag.CartTotal</td>
+    </tr>
+</table>
+@section Scripts{
+<link rel="stylesheet" href="~/Content/jquery.spinner.css" />
+<script type="text/javascript" src="~/Scripts/jquery.spinner.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $(".item_count").spinner();
+            $(".remove_link").click(function () {
+                var itemId = $(this).attr("data-id");
+                $.post("/Shop/RemoveFromCart", { id: itemId }, function (data) {
+                    $("#row-"+ data.ItemId).fadeOut("slow");//fageOut()是一种动态效果，慢慢消失掉
+                    $("#cart-total").html(data.CartTotal);
+                    $("#cart-count").html(data.CartCount);
+                });
+            });
+
+            $(".item_count").bind("update",function () {
+                var itemId = $(this).attr("data-id");
+                var itemCount = $(this).val();
+                $.post("/Shop/UpdateItemCount", { id: itemId,count:itemCount }, function (data) {
+                    $("#cart-total").html(data.CartTotal);
+                    $("#cart-count").html(data.CartCount);
+                });
+            });
+        });
+    </script>
+}

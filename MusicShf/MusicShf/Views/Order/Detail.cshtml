@@ -1,0 +1,47 @@
+﻿@model MusicShf.Models.OrderDetails
+
+@{
+    ViewBag.Title = "Detail";
+}
+
+<h2>Detail</h2>
+
+<div>
+    <h4>OrderDetails</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Albums.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Albums.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Orders.Username)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Orders.Username)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Quantity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UnitPrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UnitPrice)
+        </dd>
+
+    </dl>
+</div>
+

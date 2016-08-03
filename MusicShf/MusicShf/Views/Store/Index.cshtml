@@ -1,0 +1,18 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc
+@model IEnumerable<MusicShf.Models.Albums>
+
+    @{
+        ViewBag.Title = "Index";
+    }
+
+    <h2>Index</h2>
+               <div>
+                   @using (Html.BeginForm())
+                   {
+                      @Html.TextBox("search")
+                       <input type="submit" value="搜索"/>
+                   }
+               </div>
+    @Html.Partial("SharedS")
+    @Html.PagedListPager((IPagedList)Model, page=>Url.Action("Index", new {ViewBag.search,page }))

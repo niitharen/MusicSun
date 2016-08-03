@@ -1,0 +1,74 @@
+﻿@model MusicShf.Models.Albums
+
+@{
+    ViewBag.Title = "Detail";
+}
+
+<h2>Detail</h2>
+
+<div>
+    <h4>Albums</h4>
+    <img src="@Model.AlbumArtUrl" />
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Artists.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Artists.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Genres.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Genres.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        @using (Html.BeginForm("AddToCart", "Shop",FormMethod.Get))
+        {
+            @Html.Hidden("id",Model.AlbumId)
+        <dt>数量</dt>
+
+        <dd>
+
+           <input type="text" id="text_count" name="count" value="1"/>
+        </dd>
+
+        <dt>
+            <input name="id" type="hidden" value="@Model.AlbumId"/>
+        </dt>
+        <dd><input type="submit" value="加入购物车"/></dd>
+        }
+    </dl>
+</div>
+<p>
+  @*  @Html.ActionLink("加入购物车", "AddToCart", "Shop", new { id = Model.AlbumId }, new { }) |*@
+
+</p>
+@section Scripts{
+    <link rel="stylesheet" href="~/Content/jquery.spinner.css"/>
+    <script type="text/javascript" src="~/Scripts/jquery.spinner.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#text_count").spinner();
+        });
+    </script>
+    }

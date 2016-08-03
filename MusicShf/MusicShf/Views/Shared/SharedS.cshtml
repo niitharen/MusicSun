@@ -1,0 +1,17 @@
+﻿@model IEnumerable<MusicShf.Models.Albums>
+
+    @foreach (var album in Model)
+    {
+        <a href="@Url.Action("Detail","Store",new { id = album.AlbumId })">
+            <div class="col-md-3">
+                <p>
+                    <img src="@album.AlbumArtUrl" alt="@album.Title" />
+                </p>
+                <p>@album.Title</p>
+            </div>
+        </a>
+
+    }
+
+
+

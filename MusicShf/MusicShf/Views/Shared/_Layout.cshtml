@@ -23,9 +23,23 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("主页", "Index", "Home")</li>
-                    <li>@Html.ActionLink("关于", "About", "Home")</li>
-                    <li>@Html.ActionLink("联系方式", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("商品", "Index", "Store")</li>
+                    @if(Request.IsAuthenticated && User.IsInRole("admin"))
+                     {//设置只有管理员登录后才能看到商品管理
+                           <li>@Html.ActionLink("商品管理", "Index", "StoreManager")</li>
+                    }
+                    <li>@Html.ActionLink("我的订单","Index","Order")</li>
                 </ul>
+             @*<ul class="nav navbar-nav navbar-right">
+                    <li><a href="@Url.Action("index","Shop")")>
+                           <img src="~/Content/images/cart.png"/>
+                        购物车(@MusicShf.Models.ShopCart.GetCartCount())
+                        </a>
+                     </li>
+                </ul> 
+            此段代码已复制至_CartSummary.cshtml文件中，可以删除*@
+         
+                @{Html.RenderAction("GetCartSummary","Shop"); }
                 @Html.Partial("_LoginPartial")
             </div>
         </div>

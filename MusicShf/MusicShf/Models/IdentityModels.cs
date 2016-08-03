@@ -3,6 +3,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Web;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace MusicShf.Models
 {
@@ -16,6 +18,7 @@ namespace MusicShf.Models
             // 在此处添加自定义用户声明
             return userIdentity;
         }
+        private int Age { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -23,11 +26,45 @@ namespace MusicShf.Models
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
+            Database.SetInitializer(new ApplicationDbInitialize());
         }
 
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
+        }
+    }
+
+    public class ApplicationDbInitialize : DropCreateDatabaseIfModelChanges<ApplicationDbContext>
+    {
+        protected override void Seed(ApplicationDbContext context)
+        {
+            var userManager = HttpContext.Current.GetOwinContext().Get<ApplicationUserManager>();
+            var roleManager = HttpContext.Current.GetOwinContext().Get<ApplicationRoleManager>();
+            var roleName = "admin";
+            var userName = "admin@123.com";
+            var userPsw = "Admin@123";
+            var role = roleManager.FindByName(roleName);
+            if (role == null)
+            {
+                role = new IdentityRole(roleName);
+                roleManager.Create(role);
+            }
+            var user = userManager.FindByName(userName);
+            if (user == null)
+            {
+                user = new ApplicationUser();
+                user.Email = userName;
+                user.UserName = userName;
+                userManager.Create(user, userPsw);
+            }
+            var roles = userManager.GetRoles(user.Id);
+            if (!roles.Contains(roleName))
+            {
+                userManager.AddToRole(user.Id, roleName);
+            }
+
+            base.Seed(context);
         }
     }
 }
