@@ -18,9 +18,9 @@ namespace MusicShf.Controllers
             return View(list);
         }
 
-        public ActionResult Detail(int orderId)
+        public ActionResult Detail(int id)
         {
-            var list = db.Orders.Where(p => p.OrderId == orderId).ToList();
+            var list = db.OrderDetails.Where(p => p.OrderId == id).ToList();
             return View(list);
         }
     }
